@@ -1,0 +1,14 @@
+.section {
+    text-align: center;
+    & h1 {
+        margin-block: 1rem 0;
+    }
+    & p {
+        margin-block: 0.5rem;
+    }
+}
+
+.group-button {
+    width: min(100%, 30rem);
+    margin-inline: auto;
+}
