@@ -1,31 +1,41 @@
 import type { NextPage } from "next";
 import styles from "../styles/Home.module.scss";
 
+import { useState, useEffect } from "react";
+import supabase from "../lib/getSupabase";
+
+import Profile from "../components/Profile";
 import {
     GoogleButton,
     TwitterButton,
     GithubButton,
+    SignOut,
 } from "../components/Buttons";
 
-import { Group } from "@mantine/core";
+import { Group, LoadingOverlay } from "@mantine/core";
 
-import { Magic } from "magic-sdk";
-import { OAuthExtension } from "@magic-ext/oauth";
+type Provider = "github" | "google" | "twitter";
 
 const Home: NextPage = () => {
-    const authGitHub = async () => {
-        const magic = new Magic(`${process.env.MAGIC_API_KEY}`, {
-            extensions: [new OAuthExtension()],
-            testMode: true,
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [user, setUser] = useState<any>();
+
+    const auth = async (provider: Provider) => {
+        const { error } = await supabase.auth.signIn({
+            provider: `${provider}`,
         });
-        await magic.oauth.loginWithRedirect({
-            provider: "github",
-            redirectURI: "https://your-app.com/your/oauth/callback",
-            scope: ["user:email"],
-        });
-        const result = await magic.oauth.getRedirectResult();
-        console.log(result);
     };
+
+    const signOut = async () => {
+        const { error } = await supabase.auth.signOut();
+        setUser(null);
+    };
+
+    useEffect(() => {
+        const supabaseUser = supabase.auth.user();
+        setUser(supabaseUser);
+        setIsLoading(false);
+    }, [user]);
 
     return (
         <>
@@ -38,13 +48,32 @@ const Home: NextPage = () => {
                     grow
                     position='center'
                     direction='column'
-                    sx={{ padding: 15 }}
+                    style={{ padding: 15, position: "relative" }}
                 >
-                    {/* <GoogleButton>Continue with Google</GoogleButton>
-                    <TwitterButton>Login with Twitter</TwitterButton> */}
-                    <GithubButton onClick={authGitHub}>
-                        Authenticate with GitHub
-                    </GithubButton>
+                    <LoadingOverlay visible={isLoading} />
+                    {!user ? (
+                        <>
+                            <GoogleButton onClick={() => auth("google")}>
+                                Continue with Google
+                            </GoogleButton>
+                            <TwitterButton onClick={() => auth("twitter")}>
+                                Login with Twitter
+                            </TwitterButton>
+                            <GithubButton onClick={() => auth("github")}>
+                                Authenticate with GitHub
+                            </GithubButton>
+                        </>
+                    ) : (
+                        <>
+                            <Profile
+                                avatar={user.user_metadata.avatar_url}
+                                name={user.user_metadata.full_name}
+                                provider={user.app_metadata.provider}
+                                email={user.user_metadata.email}
+                            />
+                            <SignOut onClick={signOut}>Sign Out</SignOut>
+                        </>
+                    )}
                 </Group>
             </section>
         </>

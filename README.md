@@ -1,3 +1,26 @@
-# What is Magic?
+# Authentication with Social Providers using Supabase
 
-Magic is a developer SDK that integrates with your application to enable passwordless Web3 onboarding (no seed phrases) and authentication using magic links (similar to Slack and Medium). Magic enables blazing-fast, hardware-secured, passwordless login, Web3 onboarding, and access to over 20 blockchains with a few lines of code — even if you have an existing auth solution.
+> Every Supabase project comes with a complete User Management system that works without any additional tools.
+
+### All the social providers
+
+Enable social logins with the click of a button. Google, Facebook, GitHub, Azure, Gitlab, Twitter, Discord, and many more.
+
+### Fully integrated
+
+Incredibly simple Auth, without a single external authentication service. Built-in Authentication, Authorization, and User Management.
+
+### Own your data
+
+User data stored in your Supabase database so you never have to worry about 3rd party privacy issues. Host your data in 8 different locations.
+
+### Simple APIs
+
+APIs that you can understand. With powerful libraries that work on client and server-side applications.
+
+```javascript
+// Sign in with GitHub
+const { user, error } = await supabase.auth.signIn({
+    provider: "github",
+});
+```

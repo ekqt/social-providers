@@ -55,4 +55,14 @@ const GithubButton = (props: ButtonProps<"button">) => {
     );
 };
 
-export { GoogleButton, TwitterButton, GithubButton };
+const SignOut = (props: ButtonProps<"button">) => {
+    return (
+        <Button
+            size='md'
+            {...props}
+            variant="default"
+        />
+    );
+};
+
+export { GoogleButton, TwitterButton, GithubButton, SignOut };
