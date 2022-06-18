@@ -21,20 +21,30 @@ const Home: NextPage = () => {
     const [user, setUser] = useState<any>();
 
     const auth = async (provider: Provider) => {
-        const { error } = await supabase.auth.signIn({
+        setIsLoading(true);
+        await supabase.auth.signIn({
             provider: `${provider}`,
         });
     };
 
     const signOut = async () => {
-        const { error } = await supabase.auth.signOut();
+        setIsLoading(true);
+        await supabase.auth.signOut();
         setUser(null);
+        setIsLoading(false);
     };
 
-    useEffect(() => {
+    const getUser = () => {
         const supabaseUser = supabase.auth.user();
         setUser(supabaseUser);
         setIsLoading(false);
+    };
+
+    useEffect(() => {
+        window.addEventListener("hashchange", function () {
+            getUser();
+        });
+        getUser();
     }, [user]);
 
     return (
