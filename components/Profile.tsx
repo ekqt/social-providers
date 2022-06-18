@@ -20,11 +20,11 @@ export default function UserInfoIcons({
                 <div>
                     <Text
                         size='xs'
-                        sx={{ textTransform: "uppercase" }}
+                        style={{ textTransform: "uppercase" }}
                         weight={700}
                         color='dimmed'
                     >
-                        {provider}
+                        Provider: {provider}
                     </Text>
 
                     <Text size='lg' weight={500}>

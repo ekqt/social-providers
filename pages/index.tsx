@@ -4,17 +4,14 @@ import styles from "../styles/Home.module.scss";
 import { useState, useEffect } from "react";
 import supabase from "../lib/getSupabase";
 
+import { GoogleButton, GithubButton, SignOut } from "../components/Buttons";
 import Profile from "../components/Profile";
-import {
-    GoogleButton,
-    TwitterButton,
-    GithubButton,
-    SignOut,
-} from "../components/Buttons";
+import Information from "../components/Information";
+import GitHubCorner from "../components/GitHubCorner";
 
 import { Group, LoadingOverlay } from "@mantine/core";
 
-type Provider = "github" | "google" | "twitter";
+type Provider = "github" | "google";
 
 const Home: NextPage = () => {
     const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -34,13 +31,12 @@ const Home: NextPage = () => {
         setIsLoading(false);
     };
 
-    const getUser = () => {
-        const supabaseUser = supabase.auth.user();
-        setUser(supabaseUser);
-        setIsLoading(false);
-    };
-
     useEffect(() => {
+        const getUser = () => {
+            const supabaseUser = supabase.auth.user();
+            setUser(supabaseUser);
+            setIsLoading(false);
+        };
         window.addEventListener("hashchange", function () {
             getUser();
         });
@@ -50,7 +46,10 @@ const Home: NextPage = () => {
     return (
         <>
             <section className={styles.section}>
-                <h1>Social Providers</h1>
+                <h1>
+                    <span>social</span>
+                    <span>providers</span>
+                </h1>
                 <p>What do they use? Let&apos;s find out!</p>
             </section>
             <section className={styles["group-button"]}>
@@ -58,7 +57,7 @@ const Home: NextPage = () => {
                     grow
                     position='center'
                     direction='column'
-                    style={{ padding: 15, position: "relative" }}
+                    style={{ position: "relative" }}
                 >
                     <LoadingOverlay visible={isLoading} />
                     {!user ? (
@@ -66,9 +65,6 @@ const Home: NextPage = () => {
                             <GoogleButton onClick={() => auth("google")}>
                                 Continue with Google
                             </GoogleButton>
-                            <TwitterButton onClick={() => auth("twitter")}>
-                                Login with Twitter
-                            </TwitterButton>
                             <GithubButton onClick={() => auth("github")}>
                                 Authenticate with GitHub
                             </GithubButton>
@@ -86,6 +82,10 @@ const Home: NextPage = () => {
                     )}
                 </Group>
             </section>
+            <section className={styles["info"]}>
+                {user && <Information />}
+            </section>
+            <GitHubCorner href={"https://github.com/ekqt/social-providers"} />
         </>
     );
 };

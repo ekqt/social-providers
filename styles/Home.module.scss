@@ -1,7 +1,15 @@
 .section {
     text-align: center;
     & h1 {
-        margin-block: 1rem 0;
+        font-size: 2.5rem;
+        margin-block: 0;
+        & span {
+            display: block;
+            line-height: 0.85;
+        }
+        & span:first-of-type {
+            font-size: 4rem;
+        }
     }
     & p {
         margin-block: 0.5rem;
@@ -11,4 +19,22 @@
 .group-button {
     width: min(100%, 30rem);
     margin-inline: auto;
+}
+
+.info {
+    width: min(100%, 30rem);
+    margin-inline: auto;
+    & h3, p {
+        margin-block: 0.5rem;
+    }
+    & a {
+        text-decoration: underline;
+        text-decoration-color: #4DABF7;
+        text-underline-offset: 0.2rem;
+        text-decoration-thickness: 2px;
+        transition: text-decoration-color 0.15s ease-in-out;
+        &:hover {
+            text-decoration-color: #228BE6;
+        }
+    }
 }
